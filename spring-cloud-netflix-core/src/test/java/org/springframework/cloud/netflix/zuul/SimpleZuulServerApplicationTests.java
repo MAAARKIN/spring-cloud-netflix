@@ -61,7 +61,7 @@ public class SimpleZuulServerApplicationTests {
 	private RouteLocator routes;
 
 	private String getRoute(String path) {
-		return this.routes.getMatchingRoute(path).getLocation();
+		return this.routes.getMatchingRoute(path, null).getLocation();
 	}
 
 	@Before

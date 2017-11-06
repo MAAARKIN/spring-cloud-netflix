@@ -33,10 +33,10 @@ public interface RouteLocator {
 	 * A map of route path (pattern) to location (e.g. service id or URL).
 	 */
 	List<Route> getRoutes();
-
+	
 	/**
-	 * Maps a path to an actual route with full metadata.
-	 */
-	Route getMatchingRoute(String path);
+      * Maps a path to an actual route with full metadata and HTTP Method.
+      */
+	Route getMatchingRoute(String path, String method);
 
 }

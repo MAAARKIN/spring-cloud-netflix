@@ -46,11 +46,11 @@ public class CompositeRouteLocatorTests {
 
 	@Test
 	public void test_getMatchingRoute() {
-		assertThat(locator.getMatchingRoute("/pathA"), notNullValue());
-		assertThat(locator.getMatchingRoute("/pathA").getId(), is("1"));
-		assertThat("Locator 1 should take precedence", locator.getMatchingRoute("/pathB").getId(),
+		assertThat(locator.getMatchingRoute("/pathA", null), notNullValue());
+		assertThat(locator.getMatchingRoute("/pathA", null).getId(), is("1"));
+		assertThat("Locator 1 should take precedence", locator.getMatchingRoute("/pathB", null).getId(),
 				is("2"));
-		assertThat(locator.getMatchingRoute("/pathNot"), nullValue());
+		assertThat(locator.getMatchingRoute("/pathNot", null), nullValue());
 	}
 
 	@Test
@@ -83,15 +83,15 @@ public class CompositeRouteLocatorTests {
 			return this.routes;
 		}
 
-		@Override
-		public Route getMatchingRoute(String path) {
-			for (Route route : routes) {
-				if (path.startsWith(route.getPath())) {
-					return route;
-				}
-			}
-			return null;
-		}
+          @Override
+          public Route getMatchingRoute(String path, String method) {
+               for (Route route : routes) {
+                    if (path.startsWith(route.getPath())) {
+                         return route;
+                    }
+               }
+               return null;
+          }
 
 	}
 }
