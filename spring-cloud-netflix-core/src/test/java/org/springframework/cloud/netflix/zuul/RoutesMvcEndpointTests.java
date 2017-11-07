@@ -67,10 +67,10 @@ public class RoutesMvcEndpointTests {
 				return routes;
 			}
 
-			@Override
-			public Route getMatchingRoute(String path) {
-				return null;
-			}
+               @Override
+               public Route getMatchingRoute(String path, String method) {
+                    return null;
+               }
 		};
 		endpoint = spy(new RoutesEndpoint(locator));
 	}

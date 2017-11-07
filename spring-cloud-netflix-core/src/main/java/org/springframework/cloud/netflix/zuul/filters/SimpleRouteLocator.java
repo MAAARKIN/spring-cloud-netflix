@@ -79,15 +79,13 @@ public class SimpleRouteLocator implements RouteLocator, Ordered {
 	public Collection<String> getIgnoredPaths() {
 		return this.properties.getIgnoredPatterns();
 	}
-
+	
 	@Override
-	public Route getMatchingRoute(final String path) {
-
-		return getSimpleMatchingRoute(path);
-
+	public Route getMatchingRoute(String path, String method) {
+	     return getSimpleMatchingRoute(path, method);
 	}
 
-	protected Route getSimpleMatchingRoute(final String path) {
+	protected Route getSimpleMatchingRoute(final String path, final String method) {
 		if (log.isDebugEnabled()) {
 			log.debug("Finding route for path: " + path);
 		}
@@ -108,8 +106,26 @@ public class SimpleRouteLocator implements RouteLocator, Ordered {
 		String adjustedPath = adjustPath(path);
 
 		ZuulRoute route = getZuulRoute(adjustedPath);
-
+		route = validateMethod(route, method);
 		return getRoute(route, adjustedPath);
+	}
+	
+	protected ZuulRoute validateMethod(ZuulRoute route, String method) {
+	     if (route == null) {
+	          return null;
+	     }
+	     
+	     if (route.getMethods() == null || route.getMethods().isEmpty() || !StringUtils.hasText(method)) {
+               //accept all methods by default if not defined
+               return route;
+          }
+          
+          for (String zuulMethod : route.getMethods()) {
+               if (zuulMethod.toUpperCase().equals(method)) {
+                    return route;
+               }
+          }
+          return null;
 	}
 
 	protected ZuulRoute getZuulRoute(String adjustedPath) {
