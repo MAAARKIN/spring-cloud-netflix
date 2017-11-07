@@ -86,6 +86,8 @@ public class ZuulProperties {
 	 * Flag to determine whether the proxy forwards the Host header.
 	 */
 	private boolean addHostHeader = false;
+	
+	private Set<String> methods = new LinkedHashSet<>();
 
 	/**
 	 * Set of service names not to consider for proxying automatically. By default all
@@ -239,6 +241,8 @@ public class ZuulProperties {
 		 * credentials.
 		 */
 		private Set<String> sensitiveHeaders = new LinkedHashSet<>();
+		
+		private Set<String> methods = new LinkedHashSet<>();
 
 		private boolean customSensitiveHeaders = false;
 
@@ -253,6 +257,19 @@ public class ZuulProperties {
 			this.sensitiveHeaders = sensitiveHeaders;
 			this.customSensitiveHeaders = sensitiveHeaders != null;
 		}
+		
+		public ZuulRoute(String id, String path, String serviceId, String url,
+                    boolean stripPrefix, Boolean retryable, Set<String> sensitiveHeaders, Set<String> methods) {
+               this.id = id;
+               this.path = path;
+               this.serviceId = serviceId;
+               this.url = url;
+               this.stripPrefix = stripPrefix;
+               this.retryable = retryable;
+               this.sensitiveHeaders = sensitiveHeaders;
+               this.customSensitiveHeaders = sensitiveHeaders != null;
+               this.methods = methods;
+          }
 
 		public ZuulRoute(String text) {
 			String location = null;
@@ -276,6 +293,21 @@ public class ZuulProperties {
 			this.path = path;
 			setLocation(location);
 		}
+		
+		public ZuulRoute(String path, String location, Set<String> methods) {
+               this.id = extractId(path);
+               this.path = path;
+               this.methods = methods;
+               setLocation(location);
+          }
+		
+		public ZuulRoute(String path, String location, Set<String> methods, boolean stripPrefix) {
+               this.id = extractId(path);
+               this.path = path;
+               this.methods = methods;
+               this.stripPrefix = stripPrefix;
+               setLocation(location);
+          }
 
 		public String getLocation() {
 			if (StringUtils.hasText(this.url)) {

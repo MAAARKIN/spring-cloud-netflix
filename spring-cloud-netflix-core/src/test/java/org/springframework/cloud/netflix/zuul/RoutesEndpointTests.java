@@ -55,10 +55,10 @@ public class RoutesEndpointTests {
 				return routes;
 			}
 
-			@Override
-			public Route getMatchingRoute(String path) {
-				return null;
-			}
+               @Override
+               public Route getMatchingRoute(String path, String method) {
+                    return null;
+               }
 		};
 	}
 

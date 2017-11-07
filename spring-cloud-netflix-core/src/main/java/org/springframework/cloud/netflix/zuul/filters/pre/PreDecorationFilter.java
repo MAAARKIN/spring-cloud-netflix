@@ -110,7 +110,7 @@ public class PreDecorationFilter extends ZuulFilter {
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		final String requestURI = this.urlPathHelper.getPathWithinApplication(ctx.getRequest());
-		Route route = this.routeLocator.getMatchingRoute(requestURI);
+		Route route = this.routeLocator.getMatchingRoute(requestURI, ctx.getRequest().getMethod());
 		if (route != null) {
 			String location = route.getLocation();
 			if (location != null) {
